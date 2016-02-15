@@ -1,0 +1,70 @@
+This README file contains information on the contents of the
+StorageOS Yocto layer.
+
+Please see the corresponding sections below for details.
+
+
+Dependencies
+============
+
+This layer depends on:
+
+  URI: git://git.yoctoproject.org/git/poky.git
+  branch: jethro
+
+  URI: git://git.yoctoproject.org/meta-intel.git
+  branch: jethro
+
+  URI: git://git.openembedded.org/meta-openembedded
+  layers: networking, filesystems, python, perl
+  branch: jethro
+
+  URI: git://git.openembedded.org/meta-virtualisation
+  branch: jethro
+
+  URI: git://git.yoctoproject.org/meta-security
+  branch: jethro
+
+
+Patches
+=======
+
+Please submit any patches against the StorageOS layer via the GitHub issue
+tracker.
+
+
+Table of Contents
+=================
+
+  I. Adding the StorageOS layer to your build
+ II. Misc
+
+
+I. Adding the StorageOS layer to your build
+=================================================
+
+In order to use this layer, you need to make the build system aware of
+it.
+
+Assuming the StorageOS layer exists at the top-level of your
+yocto build tree, you can add it to the build system by adding the
+location of the StorageOS layer to bblayers.conf, along with any
+other layers needed. e.g.:
+
+BBLAYERS ?= " \
+  /opt/poky/meta \
+  /opt/poky/meta-yocto \
+  /opt/poky/meta-yocto-bsp \
+  /opt/poky/meta-storageos \
+  /opt/poky/meta-intel \
+  /opt/poky/meta-openembedded/meta-oe \
+  /opt/poky/meta-openembedded/meta-python \
+  /opt/poky/meta-openembedded/meta-networking \
+  /opt/poky/meta-openembedded/meta-filesystems \
+  /opt/poky/meta-openembedded/meta-perl \
+  /opt/poky/meta-virtualization \
+  /opt/poky/meta-security \
+  "
+
+II. Misc
+========
