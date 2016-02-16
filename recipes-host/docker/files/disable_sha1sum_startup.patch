@@ -1,0 +1,72 @@
+From cfe29ac8804524f3a6caef7dcb4d96371466e0a1 Mon Sep 17 00:00:00 2001
+From: Tomas Frydrych <tomas@tomtain.com>
+Date: Tue, 16 Feb 2016 13:09:32 +0000
+Subject: [PATCH] util.go: disable sha1 check
+
+In yocto builds, preprocessing of binaries can happen after the install phase.
+Some of these can modify the size/sha1sum of the binaries.
+e.g. A new .gnu_debuglink can happen
+
+docker will not start because of these modifications. Docker initially
+does a sha1sum of dockerinit to identify the dockerinit that it was built
+with, this is done for security and for compatibility reasons. Since
+this checking is disabled, we should rely on rpm tests for validation
+of the binary instead.
+
+Original yocto patch for 1.6.2 updated for 1.10.0
+Signed-off-by: Amy Fong <amy.fong@windriver.com>
+Signed-off-by: Tomas Frydrych <tomas@tomtain.com>
+
+Signed-off-by: Tomas Frydrych <tomas@tomtain.com>
+---
+ utils/utils.go | 19 +------------------
+ 1 file changed, 1 insertion(+), 18 deletions(-)
+
+diff --git a/utils/utils.go b/utils/utils.go
+index 340b9e4..43e08ec 100644
+--- a/utils/utils.go
++++ b/utils/utils.go
+@@ -1,10 +1,7 @@
+ package utils
+ 
+ import (
+-	"crypto/sha1"
+-	"encoding/hex"
+ 	"fmt"
+-	"io"
+ 	"io/ioutil"
+ 	"os"
+ 	"os/exec"
+@@ -40,20 +37,6 @@ func SelfPath() string {
+ 	return path
+ }
+ 
+-func dockerInitSha1(target string) string {
+-	f, err := os.Open(target)
+-	if err != nil {
+-		return ""
+-	}
+-	defer f.Close()
+-	h := sha1.New()
+-	_, err = io.Copy(h, f)
+-	if err != nil {
+-		return ""
+-	}
+-	return hex.EncodeToString(h.Sum(nil))
+-}
+-
+ func isValidDockerInitPath(target string, selfPath string) bool { // target and selfPath should be absolute (InitPath and SelfPath already do this)
+ 	if target == "" {
+ 		return false
+@@ -75,7 +58,7 @@ func isValidDockerInitPath(target string, selfPath string) bool { // target and
+ 		}
+ 		return os.SameFile(targetFileInfo, selfPathFileInfo)
+ 	}
+-	return dockerversion.InitSHA1 != "" && dockerInitSha1(target) == dockerversion.InitSHA1
++	return true
+ }
+ 
+ // DockerInitPath figures out the path of our dockerinit (which may be SelfPath())
+-- 
+2.7.0
+
