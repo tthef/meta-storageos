@@ -23,6 +23,7 @@ SRCREV = "590d5108bbdaabb05af590f76c9757daceb6d02e"
 SRCBRANCH = "v1.10"
 SRC_URI = "\
         git://github.com/docker/docker.git;branch=${SRCBRANCH};nobranch=1 \
+        file://defaults \
         file://docker.service \
         file://ld-linux-x86-64.so.2 \
         file://libapparmor.so.1 \
@@ -53,6 +54,10 @@ RRECOMMENDS_${PN} += " kernel-module-dm-thin-pool kernel-module-nf-nat"
 DOCKER_PKG="github.com/docker/docker"
 
 
+# Docker doesn't have a configure stage - override default
+do_configure() {
+}
+
 do_compile() {
 	make cross
 }
@@ -76,6 +81,8 @@ do_install() {
                 install -m 644 ${S}/contrib/init/systemd/docker.* ${D}/${systemd_unitdir}/system
                 # replaces one copied from above with one that sources an environment file from /etc/default/docker
                 install -m 644 ${WORKDIR}/docker.service ${D}/${systemd_unitdir}/system
+                install -d ${D}/${sysconfdir}/default
+                install -m 644 ${WORKDIR}/defaults ${D}/${sysconfdir}/default/docker
         fi
 
 	mkdir -p ${D}/usr/share/docker/
