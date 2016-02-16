@@ -42,6 +42,7 @@ SRC_URI = "\
 	file://docker.init \
 	file://disable_sha1sum_startup.patch \
 	file://defaults \
+	file://modules.conf \
 	"
 
 S = "${WORKDIR}/git"
@@ -133,6 +134,8 @@ do_install() {
 		install -m 644 ${S}/contrib/init/systemd/docker.* ${D}/${systemd_unitdir}/system
 		# replaces one copied from above with one that uses the local registry for a mirror
 		install -m 644 ${WORKDIR}/docker.service ${D}/${systemd_unitdir}/system
+		install -d ${D}${sysconfdir}/modules-load.d
+		install -m 644 ${WORKDIR}/modules.conf ${D}${sysconfdir}/modules-load.d/docker.conf
         else
             install -d ${D}${sysconfdir}/init.d
             install -m 0755 ${WORKDIR}/docker.init ${D}${sysconfdir}/init.d/docker.init
