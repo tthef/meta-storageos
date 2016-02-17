@@ -69,7 +69,8 @@ DEPENDS = "go-cross-1.5 \
 DEPENDS_append_class-target = "lvm2"
 RDEPENDS_${PN} = "curl aufs-util git cgroup-lite util-linux iptables   \
 	          kernel-module-iptable-nat kernel-module-br-netfilter \
-                  kernel-module-xt-conntrack \
+                  kernel-module-xt-conntrack kernel-module-xt-addrtype \
+                  kernel-module-xt-cgroup \
                  "
 RRECOMMENDS_${PN} = "lxc rt-tests"
 RRECOMMENDS_${PN} += "kernel-module-dm-thin-pool kernel-module-nf-nat"
