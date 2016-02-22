@@ -11,7 +11,7 @@ IMAGE_INSTALL = "packagegroup-core-boot        \
 
 # Add package management, so that the packager (rpm/apt/opkg) can be used
 # on the images
-IMAGE_FEATURES += "package-management"
+IMAGE_FEATURES += "package-management ssh-server-openssh"
 
 # Do we need extra locales?
 IMAGE_LINGUAS = " "
@@ -26,8 +26,5 @@ inherit storageos-image-vm
 # any and all of them by specifying the types here.
 IMAGE_FSTYPES = "vmdk"
 
-APPEND =+ "debugshell=5"
-
 # Mabye extra space?
 #IMAGE_ROOTFS_EXTRA_SPACE = "41943040"
-
