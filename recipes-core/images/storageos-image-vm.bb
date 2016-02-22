@@ -4,6 +4,7 @@ IMAGE_INSTALL = "packagegroup-core-boot        \
                  ${ROOTFS_PKGMANAGE_BOOTSTRAP} \
                  ${CORE_IMAGE_EXTRA_INSTALL}   \
                  docker                        \
+                 storageos-units               \
                  libseccomp                    \
                  connman                       \
                  bind-utils                    \
