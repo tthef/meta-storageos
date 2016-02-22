@@ -74,6 +74,7 @@ RDEPENDS_${PN} = "curl aufs-util git cgroup-lite util-linux iptables   \
                  "
 RRECOMMENDS_${PN} = "lxc rt-tests"
 RRECOMMENDS_${PN} += "kernel-module-dm-thin-pool kernel-module-nf-nat"
+RRECOMMENDS_${PN} += "kernel-module-overlay"
 DOCKER_PKG="github.com/docker/docker"
 
 do_configure() {
