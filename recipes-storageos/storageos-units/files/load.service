@@ -1,0 +1,12 @@
+[Unit]
+Description=StorageOS Demo Data Load
+After=api.service
+ConditionPathExists=!/var/lib/.storageos-data-loaded
+
+[Service]
+ExecStartPre=-/usr/bin/docker kill load
+ExecStartPre=-/usr/bin/docker rm load
+ExecStartPre=/usr/bin/docker pull registry.reponixio.net/load
+ExecStart=/bin/sh -c "/usr/bin/docker run --name load --link api:api registry.reponixio.net/load all"
+ExecStop=/usr/bin/docker stop load
+ExecStopPost=/usr/bin/touch /var/lib/.storageos-data-loaded

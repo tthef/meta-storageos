@@ -1,0 +1,12 @@
+[Unit]
+Description=StorageOS LIO
+After=flanneld.service
+After=nats.service
+
+[Service]
+Restart=on-failure
+ExecStartPre=-/usr/bin/docker kill lio
+ExecStartPre=-/usr/bin/docker rm lio
+ExecStartPre=/usr/bin/docker pull registry.reponixio.net/lio
+ExecStart=/bin/sh -c "/usr/bin/docker run --name lio --link nats:nats -v /etc/storageos.config:/etc/storageos.config registry.reponixio.net/lio"
+ExecStop=/usr/bin/docker stop lio

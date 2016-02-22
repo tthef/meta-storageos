@@ -1,0 +1,11 @@
+[Unit]
+Description=StorageOS FS
+After=flanneld.service
+
+[Service]
+Restart=on-failure
+ExecStartPre=-/usr/bin/docker kill fs
+ExecStartPre=-/usr/bin/docker rm fs
+ExecStartPre=/usr/bin/docker pull registry.reponixio.net/fs
+ExecStart=/bin/sh -c "/usr/bin/docker run --name fs --privileged -v /proc/1/ns:/ns -v /storageos:/storageos --cap-add SYS-ADMIN --device /dev/fuse -v /etc/storageos.config:/etc/storageos.config registry.reponixio.net/fs"
+ExecStop=/usr/bin/docker stop fs

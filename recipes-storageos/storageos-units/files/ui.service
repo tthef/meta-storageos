@@ -1,0 +1,11 @@
+[Unit]
+Description=StorageOS UI
+After=api.service
+
+[Service]
+Restart=on-failure
+ExecStartPre=-/usr/bin/docker kill ui
+ExecStartPre=-/usr/bin/docker rm ui
+ExecStartPre=/usr/bin/docker pull registry.reponixio.net/ui
+ExecStart=/bin/sh -c "/usr/bin/docker run --name ui -p 80:8080 registry.reponixio.net/ui"
+ExecStop=/usr/bin/docker stop ui

@@ -1,0 +1,13 @@
+[Unit]
+Description=StorageOS API
+After=flanneld.service
+After=consul.service
+After=nats.service
+
+[Service]
+Restart=on-failure
+ExecStartPre=-/usr/bin/docker kill api
+ExecStartPre=-/usr/bin/docker rm api
+ExecStartPre=/usr/bin/docker pull registry.reponixio.net/storageos
+ExecStart=/bin/sh -c "/usr/bin/docker run --name api --link consul:consul --link nats:nats --link influxdb:influxdb -p 8000:8000 registry.reponixio.net/storageos server"
+ExecStop=/usr/bin/docker stop api

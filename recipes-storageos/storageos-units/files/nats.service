@@ -1,0 +1,12 @@
+[Unit]
+Description=StorageOS Message Router (nats)
+After=docker.service
+After=flanneld.service
+
+[Service]
+Restart=on-failure
+ExecStartPre=-/usr/bin/docker kill nats
+ExecStartPre=-/usr/bin/docker rm nats
+ExecStartPre=/usr/bin/docker pull nats
+ExecStart=/bin/sh -c "/usr/bin/docker run --name nats nats"
+ExecStop=/usr/bin/docker stop nats

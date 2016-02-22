@@ -1,0 +1,13 @@
+[Unit]
+Description=StorageOS Router
+After=flanneld.service
+After=consul.service
+After=nats.service
+
+[Service]
+Restart=on-failure
+ExecStartPre=-/usr/bin/docker kill router
+ExecStartPre=-/usr/bin/docker rm router
+ExecStartPre=/usr/bin/docker pull registry.reponixio.net/storageos
+ExecStart=/bin/sh -c "/usr/bin/docker run --name router --link consul:consul --link nats:nats registry.reponixio.net/storageos router"
+ExecStop=/usr/bin/docker stop router
